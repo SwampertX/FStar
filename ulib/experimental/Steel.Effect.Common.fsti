@@ -2113,7 +2113,7 @@ let ite_soundness_tac () : Tac unit =
   norm [];
   // We remove the with_tactic call with executing the tactic before calling the SMT.
   split ();
-  apply_lemma (`unfold_with_tactic);
+  apply_lemma (`unfold_process_with_tactic);
   smt ()
 
 /// Normalization step for VC generation, used in Steel and SteelAtomic subcomps
