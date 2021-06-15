@@ -18,7 +18,7 @@ module Q = Queue
 /// ensuring that at most one enqueue (resp. dequeue) is happening at any time
 /// We only prove that this implementation is memory safe, and do not prove the functional correctness of the concurrent queue
 
-#push-options "--ide_id_info_off"
+#push-options "--ide_id_info_off --fuel 1 --ifuel 1"
 
 /// Adding the definition of the vprop equivalence to the context, for proof purposes
 let _: squash (forall p q. p `equiv` q <==> hp_of p `Steel.Memory.equiv` hp_of q) =
@@ -84,7 +84,8 @@ let intro_lock_inv #a #u (ptr:ref (Q.t a)) (ghost:ghost_ref (Q.t a))
   : SteelGhostT unit u
     (h_exists (fun v -> pts_to ptr full v `star` ghost_pts_to ghost half v))
     (fun _ -> lock_inv ptr ghost)
-  = rewrite_slprop _ _ (fun _ -> ())
+  = rewrite_slprop _ _ (fun _ -> assert_norm
+      (lock_inv ptr ghost == h_exists (fun v -> pts_to ptr full v `star` ghost_pts_to ghost half v)))
 
 /// The type of a queue pointer.
 /// Contains the concrete pointer [ptr], the pointer to ghost state [ghost],

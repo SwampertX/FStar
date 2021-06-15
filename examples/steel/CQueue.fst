@@ -378,7 +378,7 @@ let llist_fragment_tail_cons_rewrite
 
 let rec llist_fragment_tail (#a: Type) (l: Ghost.erased (list a)) (phead: ref (ccell_ptrvalue a)) : Pure vprop
   (requires True)
-  (ensures (fun v -> t_of v == ref (ccell_ptrvalue a)))
+  (ensures (fun v -> normal (t_of v) == ref (ccell_ptrvalue a)))
   (decreases (Ghost.reveal (L.length l)))
 = if Nil? l
   then vconst phead
