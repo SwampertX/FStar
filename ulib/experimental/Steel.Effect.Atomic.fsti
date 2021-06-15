@@ -179,7 +179,7 @@ let subcomp_pre (#a:Type)
 // The call to with_tactic allows us to reduce VCs in a controlled way, once all
 // uvars have been resolved.
 // To ensure an SMT-friendly encoding of the VC, it needs to be encapsulated in a squash call
-= T.with_tactic vc_norm (squash (
+= T.with_tactic_inline vc_norm (squash (
   (forall (h0:hmem pre_g). req_g (mk_rmem pre_g h0) ==> req_f (focus_rmem (mk_rmem pre_g h0)  pre_f)) /\
   (forall (h0:hmem pre_g) (x:a) (h1:hmem (post_g x)).
       ens_f (focus_rmem (mk_rmem pre_g h0) pre_f) x (focus_rmem (mk_rmem (post_g x) h1) (post_f x)) ==> ens_g (mk_rmem pre_g h0) x (mk_rmem (post_g x) h1)
@@ -461,7 +461,7 @@ val get (#p:vprop) (#opened:inames) (_:unit) : SteelGhostF (erased (rmem p))
   (ensures fun h0 r h1 -> frame_equalities p h0 h1 /\ frame_equalities p r h1)
 
 /// Returning the current value of the selector of vprop [p], as long as [p] is in the context
-let gget (#opened:inames) (p: vprop) : SteelGhost (erased (normal (t_of p)))
+let gget (#opened:inames) (p: vprop) : SteelGhost (erased (t_of p))
   opened
   p (fun _ -> p)
   (requires (fun _ -> True))
